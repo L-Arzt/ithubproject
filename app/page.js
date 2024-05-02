@@ -3,6 +3,6 @@ import React from 'react'
 
 export default function Home() {
     return (
-        <div>привет</div>
+        <div>Главная страница</div>
     )
 }
