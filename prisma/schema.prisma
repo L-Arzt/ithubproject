@@ -10,15 +10,14 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model timetable {
-  id        Int     @id @default(autoincrement())
-  weekday String
-  data DateTime
-  timeStart DateTime
-  timeEnd DateTime
-  lesson String
-  teacher String
-  classroom String
-  group String
+  id           Int      @id @default(autoincrement())
+  numberLesson Int
+  data         DateTime
+  classroom    Int
+  discipline   String
+  group        String
+  teacher      String
+  edited       Boolean
+  booked       Boolean
 }
