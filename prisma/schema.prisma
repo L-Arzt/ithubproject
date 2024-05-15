@@ -12,12 +12,14 @@ datasource db {
 
 model timetable {
   id           Int      @id @default(autoincrement())
+  code         Int      @unique
   numberLesson Int
-  data         DateTime
-  classroom    Int
+  date         DateTime
+  weekDay      Int
+  classroom    String
   discipline   String
   group        String
   teacher      String
-  edited       Boolean
-  booked       Boolean
+  edited       Boolean  @default(false)
+  booked       Boolean  @default(true)
 }
