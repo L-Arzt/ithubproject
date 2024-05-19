@@ -1,5 +1,6 @@
-'use client'
-import { useEffect, useState } from 'react';
+
+
+import { Prisma } from '@prisma/client';
 import {
 
     Table,
@@ -10,52 +11,38 @@ import {
     TableRow,
 } from "../../components/ui/table"
 import { get } from 'http';
+import { PrismaClient } from '@prisma/client';
 
-export default function TimeTable() {
-    // const [classroomId, setClassroomId] = useState(null);
-    const [data, setData] = useState([]);
-    let day = 5
+export default async function TimeTable() {
+    const prisma = new PrismaClient()
 
+    const ClassRooms = ['8-621а', '8-623б', '11-112',]
 
-    const ClassRooms = [
-        {
-            roomName: '621-а',
-            roomId: 210737156
-        },
+    async function getData() {
+        let data = []
+        for (let room of ClassRooms) {
+            const resp = await prisma.timetable.findMany({
+                where: {
+                    classroom: room
+                }
+            })
 
-        {
-            roomName: '623-б!',
-            roomId: 217739053
-        },
+            console.log({ resp });
 
-        {
-            roomName: 'svarka!',
-            roomId: 218067665
-        },
-
-    ]
-
-
-
-    useEffect(() => {
-        async function getData() {
-            let data = []
-            for (let room of ClassRooms) {
-                const resp = await (await fetch(`https://edu.donstu.ru/api/Rasp?idAudLine=${room.roomId}&sdate=2024-05-06`)).json()
-                data.push({
-                    class: room.roomName,
-                    rasp: resp.data.rasp
-                });
-
-            }
-
-            console.table(data);
-            setData(data)
+            data.push({
+                class: room,
+                rasp: resp
+            })
         }
-        getData()
-    }, [])
+        return data;
+
+    }
+    const data = await getData()
 
 
+    console.log(data)
+
+    let day = 5
 
     function buildTable(data) {
         let table = []
@@ -68,19 +55,18 @@ export default function TimeTable() {
                     {
                         data.map((aud) => {
 
-
-                            const lesson = aud.rasp.find(lesson => lesson.деньНедели === day && lesson.номерЗанятия === i);
+                            const lesson = aud.rasp.find(lesson => lesson.weekDay === day && lesson.numberLesson === i);
                             if (lesson) {
                                 return (
                                     <TableCell key={aud.class}>
-                                        <p>{lesson.преподаватель}</p>
-                                        <p>{lesson.дисциплина}</p>
-                                        <p>{lesson.группа}</p>
+                                        <p>{lesson.teacher}</p>
+                                        <p>{lesson.discipline}</p>
+                                        <p>{lesson.group}</p>
                                     </TableCell>
                                 )
                             }
                             else {
-                                return (<TableCell className="   gap-5" key={aud.class}>
+                                return (<TableCell className="gap-5" key={aud.class}>
                                     <h1>Пары нету</h1>
                                     <div className='bg-red-300 h-3 w-3 rounded-sm'> </div>
                                 </TableCell>)
@@ -104,8 +90,6 @@ export default function TimeTable() {
 
     return (
         <section className='flex items-center justify-center flex-col gap-10'>
-            <h1 className='text-xl'>Выберите свой аудиторию</h1>
-
             {data && (
                 <div>
 
