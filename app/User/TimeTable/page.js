@@ -1,4 +1,4 @@
-
+'use client'
 
 import { Prisma } from '@prisma/client';
 import {
@@ -12,11 +12,18 @@ import {
 } from "../../components/ui/table"
 import { get } from 'http';
 import { PrismaClient } from '@prisma/client';
+import { useState } from 'react';
 
 export default async function TimeTable() {
     const prisma = new PrismaClient()
 
     const ClassRooms = ['8-621а', '8-623б', '11-112',]
+
+    const [day, setDay] = useState(1)
+
+    const handleClick = (dayNum) => {
+        setDay(dayNum)
+    }
 
     async function getData() {
         let data = []
@@ -42,7 +49,6 @@ export default async function TimeTable() {
 
     console.log(data)
 
-    let day = 5
 
     function buildTable(data) {
         let table = []
@@ -90,6 +96,17 @@ export default async function TimeTable() {
 
     return (
         <section className='flex items-center justify-center flex-col gap-10'>
+
+        <div className='flex gap-5'>
+            <button onClick={() => handleClick(1)}>Понедельник</button>
+            <button onClick={() => handleClick(2)}>Вторник</button>
+            <button onClick={() => handleClick(3)}>Среда</button>
+            <button onClick={() => handleClick(4)}>Четверг</button>
+            <button onClick={() => handleClick(5)}>Пятница</button>
+            <button onClick={() => handleClick(6)}>Суббота</button>
+            <button onClick={() => handleClick(7)}>Воскресенье</button>
+        </div>
+
             {data && (
                 <div>
 
