@@ -45,10 +45,10 @@ export default function TimeTable({ data }) {
                                 console.log(aud.rasp);
                                 console.log('asdas');
                                 return (<TableCell className="gap-5" key={aud.class}>
-                                    <Link href={`/book/${i}`}>
-                                        <h1>Пары нету</h1>
-                                        <div className='bg-red-300 h-3 w-3 rounded-sm'> </div>
-                                    </Link>
+                                   <Link href={`/User/book/${i}?day=${day}&classroom=${aud.class}`}>
+                                    <h1>Пары нету</h1>
+                                    <div className='bg-red-300 h-3 w-3 rounded-sm'> </div>
+                                </Link>
                                 </TableCell>)
                             }
                         })
