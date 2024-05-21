@@ -32,6 +32,10 @@ export default function Book({ params }) {
 
                 <input hidden type="text" value={params.params[0]} name="lessonNum" />
 
+                <input hidden type="text" value={params.params[1]} name="lessonDay" />
+
+                <input hidden type="text" value={params.params[2]} name="audt" />
+
                 <input type="submit" value="Добавить" />
             </form>
         </div>

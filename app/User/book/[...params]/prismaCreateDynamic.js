@@ -13,11 +13,11 @@ export async function createLesson(formData) {
 
     const lesson = await prisma.timetable.create({
         data: {
-            numberLesson: Number(id),
-            weekDay: Number(day),
-            classroom: classroom,
-            teacher: teacher,
-            discipline: discipline,
+            numberLesson: Number(data.lessonNum),
+            weekDay: Number(data.lessonDay),
+            classroom: data.audt,
+            teacher: data.teacher,
+            discipline: data.discipline,
         },
     })
     return lesson

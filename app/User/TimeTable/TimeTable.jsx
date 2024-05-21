@@ -12,12 +12,12 @@ import {
 import Link from 'next/link';
 export default function TimeTable({ data }) {
 
-    function bookClass() {
 
-    }
+
 
     const [day, setDay] = useState(1)
-    const handleClick = (dayNum) => {
+
+    const handleClickDay = (dayNum) => {
         setDay(dayNum)
     }
     function buildTable(data) {
@@ -71,13 +71,13 @@ export default function TimeTable({ data }) {
         <section className='flex items-center justify-center flex-col gap-10'>
 
             <div className='flex gap-5'>
-                <button onClick={() => handleClick(1)}>Понедельник</button>
-                <button onClick={() => handleClick(2)}>Вторник</button>
-                <button onClick={() => handleClick(3)}>Среда</button>
-                <button onClick={() => handleClick(4)}>Четверг</button>
-                <button onClick={() => handleClick(5)}>Пятница</button>
-                <button onClick={() => handleClick(6)}>Суббота</button>
-                <button onClick={() => handleClick(7)}>Воскресенье</button>
+                <button onClick={() => handleClickDay(1)}>Понедельник</button>
+                <button onClick={() => handleClickDay(2)}>Вторник</button>
+                <button onClick={() => handleClickDay(3)}>Среда</button>
+                <button onClick={() => handleClickDay(4)}>Четверг</button>
+                <button onClick={() => handleClickDay(5)}>Пятница</button>
+                <button onClick={() => handleClickDay(6)}>Суббота</button>
+                <button onClick={() => handleClickDay(7)}>Воскресенье</button>
             </div>
 
             {data && (
