@@ -9,7 +9,7 @@ export async function createLesson(formData) {
 
     const data = Object.fromEntries(formData)
 
-    console.log(data);
+    // console.log(data);
 
     const lesson = await prisma.timetable.create({
         data: {

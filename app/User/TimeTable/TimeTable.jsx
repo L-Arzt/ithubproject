@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react';
+
 import {
     Table,
     TableBody,
@@ -12,8 +13,7 @@ import {
 import Link from 'next/link';
 export default function TimeTable({ data }) {
 
-
-
+    const [weekOffset, setWeekOffset] = useState(0);
 
     const [day, setDay] = useState(1)
 
@@ -69,8 +69,9 @@ export default function TimeTable({ data }) {
 
     return (
         <section className='flex items-center justify-center flex-col gap-10'>
-
             <div className='flex gap-5'>
+                <button onClick={() => setWeekOffset(weekOffset - 1)}>Предыдущая неделя</button>
+                <button onClick={() => setWeekOffset(weekOffset + 1)}>Следующая неделя</button>
                 <button onClick={() => handleClickDay(1)}>Понедельник</button>
                 <button onClick={() => handleClickDay(2)}>Вторник</button>
                 <button onClick={() => handleClickDay(3)}>Среда</button>
@@ -82,7 +83,6 @@ export default function TimeTable({ data }) {
 
             {data && (
                 <div>
-
                     <Table>
                         <TableHeader>
                             <TableRow>

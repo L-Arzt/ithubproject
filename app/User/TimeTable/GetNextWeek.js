@@ -1,29 +1,35 @@
 import { PrismaClient } from '@prisma/client';
 import TimeTable from './TimeTable';
+import { useState } from 'react';
 
-export default async function TimeTablePage() {
+
+
+export default async function NextWeekTimeTablePage() {
+
+
+
     const prisma = new PrismaClient()
     const ClassRooms = ['8-621а', '8-623б', '11-112',]
 
-    async function getData() {
-        function getMonday(d) {
+    async function getData(weekOffset) {
+        function getNextMonday(d) {
             d = new Date(d);
             var day = d.getDay(),
                 diff = d.getDate() - day + (day == 0 ? -6 : 1);
-            return new Date(d.setDate(diff));
+            return new Date(d.setDate(diff + 7 * weekOffset));
         }
 
-        function getSunday(d) {
-            d = getMonday(d);
+        function getNextSunday(d) {
+            d = getNextMonday(d);
             d.setDate(d.getDate() + 7);
             return d;
         }
 
-        let monday = getMonday(new Date());
-        let sunday = getSunday(monday);
+        let nextMonday = getNextMonday(new Date());
+        let nextSunday = getNextSunday(nextMonday);
 
-        console.log(monday);
-        console.log(sunday);
+        console.log(nextMonday);
+        console.log(nextSunday);
 
         let data = []
         for (let room of ClassRooms) {
@@ -33,8 +39,8 @@ export default async function TimeTablePage() {
                         { classroom: room },
                         {
                             date: {
-                                gte: getMonday(new Date()),
-                                lte: sunday
+                                gte: getNextMonday(new Date()),
+                                lte: nextSunday
                             }
                         }
                     ]
@@ -48,6 +54,9 @@ export default async function TimeTablePage() {
         }
         return data;
     }
-    const data = await getData()
-    return <TimeTable data={data} />
+
+
+        const data = await getData(weekOffset);
+        return <TimeTable data={data} weekOffset={weekOffset} setWeekOffset={setWeekOffset} />
+    
 }
