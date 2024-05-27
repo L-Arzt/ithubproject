@@ -11,7 +11,7 @@ export default function Book({ params }) {
     //     const formData = new FormData(e.target)
     //     console.log(Object.fromEntries(formData));
     // }
-    console.log(params.params);
+    // console.log(params.params);
     // [0] - номер пары  
     // [1] - день
     // [2] - название аудитории

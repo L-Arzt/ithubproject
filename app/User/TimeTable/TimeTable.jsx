@@ -11,15 +11,19 @@ import {
     TableRow,
 } from "../../components/ui/table"
 import Link from 'next/link';
-export default function TimeTable({ data }) {
+export default function TimeTable({ data, weekRange }) {
 
-    const [weekOffset, setWeekOffset] = useState(0);
+    const [dataset, setDataset] = useState(data)
+
+    const [weekset, setWeekset] = useState(0);
 
     const [day, setDay] = useState(1)
 
     const handleClickDay = (dayNum) => {
         setDay(dayNum)
     }
+    console.log(data);
+    console.log(weekRange);
     function buildTable(data) {
         let table = []
         for (let i = 1; i < 8; i++) {
@@ -29,7 +33,7 @@ export default function TimeTable({ data }) {
                     <TableCell>Пара {i}</TableCell>
 
                     {
-                        data.map((aud) => {
+                        dataset.map((aud) => {
 
                             const lesson = aud.rasp.find(lesson => lesson.weekDay === day && lesson.numberLesson === i);
                             if (lesson) {
@@ -42,8 +46,8 @@ export default function TimeTable({ data }) {
                                 )
                             }
                             else {
-                                console.log(aud.rasp);
-                                console.log('asdas');
+                                // console.log(aud.rasp);
+                                // console.log('asdas');
                                 return (<TableCell className="gap-5" key={aud.class}>
                                     <Link href={`/User/book/${i}/${day}/${aud.class}`}>
                                         <h1>Пары нету</h1>
@@ -70,8 +74,11 @@ export default function TimeTable({ data }) {
     return (
         <section className='flex items-center justify-center flex-col gap-10'>
             <div className='flex gap-5'>
-                <button onClick={() => setWeekOffset(weekOffset - 1)}>Предыдущая неделя</button>
-                <button onClick={() => setWeekOffset(weekOffset + 1)}>Следующая неделя</button>
+                <button onClick={() => setWeekset(weekset - 1)}>Предыдущая неделя</button>
+                <button onClick={() => setWeekset(weekset + 1)}>Следующая неделя</button>
+            </div>
+
+            <div className='flex gap-5'>
                 <button onClick={() => handleClickDay(1)}>Понедельник</button>
                 <button onClick={() => handleClickDay(2)}>Вторник</button>
                 <button onClick={() => handleClickDay(3)}>Среда</button>
@@ -81,20 +88,20 @@ export default function TimeTable({ data }) {
                 <button onClick={() => handleClickDay(7)}>Воскресенье</button>
             </div>
 
-            {data && (
+            {dataset && (
                 <div>
                     <Table>
                         <TableHeader>
                             <TableRow>
                                 <TableHead></TableHead>
-                                {data.map((aud) => (
+                                {dataset.map((aud) => (
                                     <TableHead key={aud.class}>{aud.class}</TableHead>
                                 ))}
                             </TableRow>
                         </TableHeader>
 
                         <TableBody >
-                            {buildTable(data)}
+                            {buildTable(dataset)}
                         </TableBody>
 
                     </Table>

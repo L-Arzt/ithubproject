@@ -11,25 +11,35 @@ export default async function NextWeekTimeTablePage() {
     const prisma = new PrismaClient()
     const ClassRooms = ['8-621а', '8-623б', '11-112',]
 
-    async function getData(weekOffset) {
-        function getNextMonday(d) {
+    async function getData(weekset) {
+
+
+        function getRelativeMonday(d) {
             d = new Date(d);
             var day = d.getDay(),
                 diff = d.getDate() - day + (day == 0 ? -6 : 1);
-            return new Date(d.setDate(diff + 7 * weekOffset));
+            return new Date(d.setDate(diff));
         }
 
-        function getNextSunday(d) {
-            d = getNextMonday(d);
+        function getNextMonday(d) {
+            d = getRelativeMonday(d);
             d.setDate(d.getDate() + 7);
             return d;
         }
 
-        let nextMonday = getNextMonday(new Date());
-        let nextSunday = getNextSunday(nextMonday);
+        function getNextSunday(d) {
+            d = getNextSunday(d);
+            d.setDate(d.getDate() + 6);
+            return d;
+        }
 
-        console.log(nextMonday);
-        console.log(nextSunday);
+        let RelativeMonday = getRelativeMonday(new Date());
+        let NextMonday = getNextMonday(RelativeMonday);
+        let NextSunday = getNextSunday(NextMonday);
+
+        // console.log(RelativeMonday);
+        // console.log(NextMonday);
+        // console.log(NextSunday);
 
         let data = []
         for (let room of ClassRooms) {
@@ -39,8 +49,8 @@ export default async function NextWeekTimeTablePage() {
                         { classroom: room },
                         {
                             date: {
-                                gte: getNextMonday(new Date()),
-                                lte: nextSunday
+                                gte: NextMonday,
+                                lte: NextSunday
                             }
                         }
                     ]
@@ -56,7 +66,7 @@ export default async function NextWeekTimeTablePage() {
     }
 
 
-        const data = await getData(weekOffset);
-        return <TimeTable data={data} weekOffset={weekOffset} setWeekOffset={setWeekOffset} />
+        const data = await getData(weekset);
+        return <TimeTable data={data} weekset={weekset} setWeekset={setWeekset} />
     
 }
