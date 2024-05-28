@@ -12,7 +12,6 @@ datasource db {
 
 model timetable {
   id           Int      @id @default(autoincrement())
-  code         Int      @unique
   numberLesson Int
   date         DateTime
   weekDay      Int
@@ -20,6 +19,6 @@ model timetable {
   discipline   String
   group        String
   teacher      String
-  edited       Boolean  @default(false)
-  booked       Boolean  @default(true)
+
+  booked Boolean @default(false)
 }

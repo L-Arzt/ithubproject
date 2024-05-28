@@ -19,6 +19,12 @@ export default function TimeTable({ data, weekRange }) {
 
     const [day, setDay] = useState(1)
 
+    function getDateFromDay(date, day) {
+        var result = new Date(date);
+        result.setDate(result.getDate() + (day - 1));
+        return new Intl.DateTimeFormat('lt').format(result);
+    }
+
     const handleClickDay = (dayNum) => {
         setDay(dayNum)
     }
@@ -49,7 +55,7 @@ export default function TimeTable({ data, weekRange }) {
                                 // console.log(aud.rasp);
                                 // console.log('asdas');
                                 return (<TableCell className="gap-5" key={aud.class}>
-                                    <Link href={`/User/book/${i}/${day}/${aud.class}`}>
+                                    <Link href={`/User/book/${i}/${day}/${aud.class}/${getDateFromDay(new Date(weekRange.monday), day)}`}>
                                         <h1>Пары нету</h1>
                                         <div className='bg-red-300 h-3 w-3 rounded-sm'> </div>
                                     </Link>
