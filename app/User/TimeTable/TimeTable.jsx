@@ -1,6 +1,6 @@
-'use client'
+'use client';
 
-import { useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 import {
     Table,
@@ -9,15 +9,37 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from "../../components/ui/table"
+} from '../../components/ui/table';
 import Link from 'next/link';
+import { ThemeContext } from '../../components/ThemeProvider';
+
+
 export default function TimeTable({ data, weekRange }) {
+    const [dataset, setDataset] = useState(data);
+    const context = useContext(ThemeContext)
+    useEffect(() => {
+        if (context.weeks) {
+            async function getData() {
+                const resp = await fetch('/api/getAudInfo', {
+                    method: 'post',
+                    body: JSON.stringify({
+                        monday: context?.weeks?.from,
+                        sunday: context?.weeks?.to
+                    })
+                })
 
-    const [dataset, setDataset] = useState(data)
+                if (resp) {
+                    const data = await resp.json()
+                    console.log(data.data);
+                    setDataset(data.data)
+                }
+            }
 
-    const [weekset, setWeekset] = useState(0);
+            getData()
+        }
+    }, [context.weeks])
 
-    const [day, setDay] = useState(1)
+    const [day, setDay] = useState(1);
 
     function getDateFromDay(date, day) {
         var result = new Date(date);
@@ -26,65 +48,86 @@ export default function TimeTable({ data, weekRange }) {
     }
 
     const handleClickDay = (dayNum) => {
-        setDay(dayNum)
-    }
-    console.log(data);
-    console.log(weekRange);
+        setDay(dayNum);
+    };
+    // console.log(data);
+    // console.log(weekRange);
     function buildTable(data) {
-        let table = []
+        let table = [];
         for (let i = 1; i < 8; i++) {
-
             let tablePart = (
                 <TableRow>
                     <TableCell>Пара {i}</TableCell>
 
-                    {
-                        dataset.map((aud) => {
+                    {dataset.map((aud) => {
+                        const lesson = aud.rasp.find(
+                            (lesson) => lesson.weekDay === day && lesson.numberLesson === i
+                        );
+                        // console.log(lesson);
+                        if (lesson) {
+                            return (
+                                <>
+                                    {lesson.booked ? (
+                                        <TableCell className="gap-5 border w-[300px] h-[130px]" key={aud.class}>
+                                            <Link href={`/User/book/UpdatePage/${lesson.id}`}>
+                                                <p>{lesson.teacher}</p>
+                                                <p>{lesson.discipline}</p>
+                                                <p>{lesson.group}</p>
+                                            </Link>
 
-                            const lesson = aud.rasp.find(lesson => lesson.weekDay === day && lesson.numberLesson === i);
-                            if (lesson) {
-                                return (
-                                    <TableCell key={aud.class}>
-                                        <p>{lesson.teacher}</p>
-                                        <p>{lesson.discipline}</p>
-                                        <p>{lesson.group}</p>
-                                    </TableCell>
-                                )
-                            }
-                            else {
-                                // console.log(aud.rasp);
-                                // console.log('asdas');
-                                return (<TableCell className="gap-5" key={aud.class}>
-                                    <Link href={`/User/book/${i}/${day}/${aud.class}/${getDateFromDay(new Date(weekRange.monday), day)}`}>
-                                        <h1>Пары нету</h1>
-                                        <div className='bg-red-300 h-3 w-3 rounded-sm'> </div>
-                                    </Link>
-                                </TableCell>)
-                            }
-                        })
+                                        </TableCell>
+                                    ) : (
+                                        <TableCell className="gap-5 border w-[300px] h-[130px]" key={aud.class}>
+                                            <p>{lesson.teacher}</p>
+                                            <p>{lesson.discipline}</p>
+                                            <p>{lesson.group}</p>
+                                        </TableCell>
+                                    )}
+                                </>
+                            );
+                        } else {
+                            // console.log(aud.rasp);
+                            // console.log('asdas');
+                            return (
+                                <TableCell className=" border w-[300px] h-[130px]" key={aud.class}>
+                                    <div className='flex items-center justify-center flex-col gap-2'>
+                                        <h1 className='text-[#7E7E7E]'>Свободно</h1>
+                                        <Link
 
+                                            href={`/User/book/${i}/${day}/${aud.class}/${getDateFromDay(
+                                                new Date(weekRange.monday),
+                                                day
+                                            )}`}
+                                        >
+                                            <button className="flex items-center justify-center bg-[#921CB0] h-[30px] rounded-md text-stone-50 p-5 ">Занять аудиторию</button>
+                                        </Link>
+                                    </div>
 
-                    }
-
+                                </TableCell>
+                            );
+                        }
+                    })}
                 </TableRow>
-            )
+            );
 
-            table.push(tablePart)
-
+            table.push(tablePart);
         }
 
-        return table
+        return table;
     }
 
-
     return (
-        <section className='flex items-center justify-center flex-col gap-10'>
-            <div className='flex gap-5'>
-                <button onClick={() => setWeekset(weekset - 1)}>Предыдущая неделя</button>
-                <button onClick={() => setWeekset(weekset + 1)}>Следующая неделя</button>
+        <section className="flex items-center justify-center flex-col gap-10">
+            <div className="flex gap-5">
+                {/* <button onClick={() => setWeekset(weekset - 1)}>
+                    Предыдущая неделя
+                </button>
+                <button onClick={() => setWeekset(weekset + 1)}>
+                    Следующая неделя
+                </button> */}
             </div>
 
-            <div className='flex gap-5'>
+            <div className="flex gap-5">
                 <button onClick={() => handleClickDay(1)}>Понедельник</button>
                 <button onClick={() => handleClickDay(2)}>Вторник</button>
                 <button onClick={() => handleClickDay(3)}>Среда</button>
@@ -106,14 +149,10 @@ export default function TimeTable({ data, weekRange }) {
                             </TableRow>
                         </TableHeader>
 
-                        <TableBody >
-                            {buildTable(dataset)}
-                        </TableBody>
-
+                        <TableBody>{buildTable(dataset)}</TableBody>
                     </Table>
-
                 </div>
             )}
         </section>
-    )
+    );
 }

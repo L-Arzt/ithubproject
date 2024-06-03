@@ -1,9 +1,8 @@
 import { PrismaClient } from '@prisma/client';
 import TimeTable from './TimeTable';
-
+import { ClassRooms } from '../../../lib/general';
 export default async function TimeTablePage() {
   const prisma = new PrismaClient({});
-  const ClassRooms = ['8-621а', '8-623б', '11-112'];
 
   function getMonday(d) {
     d = new Date(d);
@@ -26,7 +25,6 @@ export default async function TimeTablePage() {
     monday: getMonday(new Date()),
     sunday: getSunday(new Date()),
   };
-
   async function getData() {
     let data = [];
     for (let room of ClassRooms) {
