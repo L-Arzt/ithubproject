@@ -68,7 +68,7 @@ export default function TimeTable({ data, weekRange }) {
                             return (
                                 <>
                                     {lesson.booked ? (
-                                        <TableCell className="gap-5 border w-[300px] h-[130px]" key={aud.class}>
+                                        <TableCell className="gap-5 border w-[300px] h-[130px] bg-[#F7F7F8]" key={aud.class}>
                                             <Link href={`/User/book/UpdatePage/${lesson.id}`}>
                                                 <p>{lesson.teacher}</p>
                                                 <p>{lesson.discipline}</p>
@@ -77,7 +77,7 @@ export default function TimeTable({ data, weekRange }) {
 
                                         </TableCell>
                                     ) : (
-                                        <TableCell className="gap-5 border w-[300px] h-[130px]" key={aud.class}>
+                                        <TableCell className="gap-5 border w-[300px] h-[130px] bg-[#F7F7F8]" key={aud.class}>
                                             <p>{lesson.teacher}</p>
                                             <p>{lesson.discipline}</p>
                                             <p>{lesson.group}</p>
@@ -128,13 +128,13 @@ export default function TimeTable({ data, weekRange }) {
             </div>
 
             <div className="flex gap-5">
-                <button onClick={() => handleClickDay(1)}>Понедельник</button>
-                <button onClick={() => handleClickDay(2)}>Вторник</button>
-                <button onClick={() => handleClickDay(3)}>Среда</button>
-                <button onClick={() => handleClickDay(4)}>Четверг</button>
-                <button onClick={() => handleClickDay(5)}>Пятница</button>
-                <button onClick={() => handleClickDay(6)}>Суббота</button>
-                <button onClick={() => handleClickDay(7)}>Воскресенье</button>
+                <button onClick={() => handleClickDay(1)}>Пн</button>
+                <button onClick={() => handleClickDay(2)}>Вт</button>
+                <button onClick={() => handleClickDay(3)}>Ср</button>
+                <button onClick={() => handleClickDay(4)}>Чт</button>
+                <button onClick={() => handleClickDay(5)}>Пт</button>
+                <button onClick={() => handleClickDay(6)}>Сб</button>
+                <button onClick={() => handleClickDay(7)}>Вс</button>
             </div>
 
             {dataset && (

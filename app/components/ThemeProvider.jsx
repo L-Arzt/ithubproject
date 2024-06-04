@@ -10,7 +10,7 @@ export default function ThemeProvider({ children }) {
     return (
 
         <ThemeContext.Provider value={{ weeks, setWeeks }}>
-            <div className='flex justify-start'><AsideMenu />
+            <div className='flex self-start'><AsideMenu />
             </div>
             {children}
         </ThemeContext.Provider>

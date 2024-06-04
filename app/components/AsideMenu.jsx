@@ -1,7 +1,7 @@
 'use client';
 
 
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Calendar } from './ui/calendar';
 import { endOfWeek, isSameWeek, startOfWeek } from 'date-fns';
 import { ru } from 'date-fns/locale'
@@ -16,6 +16,16 @@ export default function AsideMenu() {
     const [menuVisible, setMenuVisible] = useState(true);
     const context = useContext(ThemeContext)
 
+    useEffect(() => {
+        setSelectedWeek({
+            from: startOfWeek(new Date(), {
+                weekStartsOn: 1
+            }),
+            to: endOfWeek(new Date(), {
+                weekStartsOn: 1
+            }),
+        })
+    }, [])
 
     return (
         <section>
@@ -32,7 +42,6 @@ export default function AsideMenu() {
                         <ul className="">
                             <li></li>
                             <li><Link className="text-black" href={"/"}>Главная</Link></li>
-                            <li><Link className="text-black" href={"/test"}>тест расписания</Link></li>
                             <li> <Link className="text-black" href={"/User/TimeTable"}>Расписание</Link></li>
                         </ul>
                     </nav>
@@ -48,6 +57,7 @@ export default function AsideMenu() {
                                 setSelectedWeek(undefined); // clear the selection if the week is already selected
                                 return;
                             }
+                            console.log(day);
                             const newWeek = {
                                 from: startOfWeek(day, {
                                     weekStartsOn: 1

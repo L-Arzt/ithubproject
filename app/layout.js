@@ -12,7 +12,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <section className="flex">
+        <section className="flex items-center min-h-[100vh]">
           <ThemeProvider>{children}</ThemeProvider>
         </section>
       </body>
