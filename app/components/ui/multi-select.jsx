@@ -111,7 +111,7 @@ export const MultiSelect = React.forwardRef(
                         {...props}
                         onClick={handleTogglePopover}
                         className={cn(
-                            "flex w-full p-1 rounded-md border min-h-10 h-auto items-center justify-between bg-inherit hover:bg-card",
+                            "flex w-full p-1 h-auto rounded-md border min-h-[50px]  items-center justify-between bg-inherit hover:bg-card",
                             className
                         )}
                     >
@@ -179,11 +179,11 @@ export const MultiSelect = React.forwardRef(
                 >
                     <Command>
                         <CommandInput
-                            placeholder="Search..."
+                            placeholder="Поиск..."
                             onKeyDown={handleInputKeyDown}
                         />
                         <CommandList>
-                            <CommandEmpty>No results found.</CommandEmpty>
+                            <CommandEmpty>Нет результатов.</CommandEmpty>
                             <CommandGroup>
                                 {options.map((option) => {
                                     const isSelected = selectedValues.includes(option.value);
@@ -228,7 +228,7 @@ export const MultiSelect = React.forwardRef(
                                                 }}
                                                 className="flex-1 justify-center cursor-pointer"
                                             >
-                                                Clear
+                                                Очистить
                                             </CommandItem>
                                             <Separator
                                                 orientation="vertical"
@@ -245,7 +245,7 @@ export const MultiSelect = React.forwardRef(
                                         }}
                                         className="flex-1 justify-center cursor-pointer"
                                     >
-                                        Close
+                                        Закрыть
                                     </CommandItem>
                                 </div>
                             </CommandGroup>
