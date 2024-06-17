@@ -13,7 +13,7 @@ export default withAuth(function middleware(req) {
   }
   if (
     req.nextUrl.pathname.startsWith('/user') &&
-    req.nextauth.token.role !== 'user' &&
+    // req.nextauth.token.role !== 'user' &&
     req.nextauth.token.role !== 'admin'
   ) {
     return NextResponse.redirect(`${req.nextUrl.origin}/login`);

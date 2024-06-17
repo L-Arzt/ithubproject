@@ -14,6 +14,11 @@ import Link from 'next/link';
 import { ThemeContext } from '../../components/ThemeProvider';
 
 
+import left from '../../../public/arrowLeft.png'
+import right from '../../../public/arrowRight.png'
+import Image from 'next/image';
+
+
 export default function TimeTable({ data, weekRange }) {
     const [dataset, setDataset] = useState(data);
     const context = useContext(ThemeContext)
@@ -178,10 +183,10 @@ export default function TimeTable({ data, weekRange }) {
                         <TableBody>{buildTable(dataset)}</TableBody>
                     </Table>
 
-                    <div className="flex gap-5">
-                        <button onClick={prevSlide}>Назад</button>
+                    <div className="flex items-center justify-center gap-5">
+                        <button onClick={prevSlide}><Image className=' w-10 h-10 m-5 bg-[#921CB0] rounded-lg p-1' src={left} alt='leftImg' /></button>
 
-                        <button onClick={nextSlide}>Вперед</button>
+                        <button onClick={nextSlide}><Image className='w-10 h-10 m-5 bg-[#921CB0] rounded-lg p-1' src={right} alt='rightImg' /></button>
                     </div>
 
                 </div>

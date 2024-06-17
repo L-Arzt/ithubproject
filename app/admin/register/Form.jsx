@@ -1,5 +1,5 @@
 import prisma from '../../libs/prisma'
-import { hash } from "bcrypt"
+import { hash } from "bcryptjs"
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 

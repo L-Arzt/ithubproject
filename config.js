@@ -34,6 +34,8 @@ export const NextAuthOptions = {
           if (!correctPassword) {
             return null; // Если пароль неверен, возвращаем null
           }
+
+          // || user.role !== admin
           return {
             id: user.id,
             email: user.email,
