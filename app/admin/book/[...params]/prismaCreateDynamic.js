@@ -40,7 +40,7 @@ export async function createLesson(prevState, formData) {
   if (createLesson) {
     revalidatePath('/User/TimeTable');
     return {
-      message: 'Gotovo',
+      message: 'Готово',
     };
   }
   return {

@@ -14,8 +14,9 @@ import Link from 'next/link';
 import { ThemeContext } from '../../components/ThemeProvider';
 
 
-import left from '../../../public/arrowLeft.png'
-import right from '../../../public/arrowRight.png'
+import ArrowLeftImg from '../../../public/arrowLeftImg.png'
+import ArrowRightImg from '../../../public/arrowRightImg.png'
+import edit from '../../../public/edit.png'
 import Image from 'next/image';
 
 
@@ -105,26 +106,65 @@ export default function TimeTable({ data, weekRange }) {
                         if (lesson) {
                             return (
                                 <>
-                                    <TableCell className="border w-[180px] h-[90px] transform transition-transform duration-200"
-                                        onMouseEnter={() => setHover(prevState => ({ ...prevState, [lesson.id]: true }))}
-                                        onMouseLeave={() => setHover(prevState => ({ ...prevState, [lesson.id]: false }))}
-                                    >
-                                        <div className={`relative flex flex-col items-center justify-center transition-all duration-200 `}>
-                                            {hover[lesson.id] ? (
-                                                <div className='absolute flex items-center justify-center flex-col w-[250px] h-[120px] p-2 bg-gray-200 rounded-lg gap-2'>
-                                                    <p className="font-bold">{lesson.teacher}</p>
-                                                    <p>{lesson.discipline}</p>
-                                                    <p>{lesson.group}</p>
+                                    {lesson.booked == '1' ? (
+                                        <TableCell className="border w-[180px] h-[90px] transform transition-transform duration-200"
+                                            onMouseEnter={() => setHover(prevState => ({ ...prevState, [lesson.id]: true }))}
+                                            onMouseLeave={() => setHover(prevState => ({ ...prevState, [lesson.id]: false }))}
+                                        >
+                                            <Link href={`/admin/book/UpdatePage/${lesson.id}`}>
+                                                <div className={`relative flex flex-col items-center justify-center transition-all duration-200 `}>
+                                                    {hover[lesson.id] ? (
+                                                        <div className='absolute flex items-center justify-center gap-2   w-[250px] h-[120px] p-2 bg-gray-200 rounded-lg'>
+                                                            <div className='flex flex-col'>
+                                                                <p className="font-bold">{lesson.teacher}</p>
+                                                                <p>{lesson.discipline}</p>
+                                                                <p>{lesson.group}</p>
+                                                            </div>
+
+                                                            <div>
+                                                                <Link href={`/admin/book/UpdatePage/${lesson.id}`}>
+                                                                    <button className="flex items-center justify-center bg-[#921CB0] w-[35px] h-[35px] rounded-md text-stone-50 ">
+                                                                        <Image className='w-10 h-10 m-5 bg-[#921CB0] rounded-lg p-1' src={edit} alt='editImg' />
+                                                                    </button>
+                                                                </Link>
+                                                            </div>
+
+                                                        </div>
+                                                    ) : (
+                                                        <div className='absolute'>
+                                                            <p className="z-0">{lesson.teacher.slice(0, 10)}...</p>
+                                                            <p className="z-0">{lesson.discipline.slice(0, 10)}...</p>
+                                                            <p>{lesson.group.slice(0, 10)}...</p>
+                                                        </div>
+                                                    )}
                                                 </div>
-                                            ) : (
-                                                <div className='absolute'>
-                                                    <p className="z-0">{lesson.teacher.slice(0, 10)}...</p>
-                                                    <p className="z-0">{lesson.discipline.slice(0, 10)}...</p>
-                                                    <p>{lesson.group.slice(0, 10)}...</p>
-                                                </div>
-                                            )}
-                                        </div>
-                                    </TableCell>
+                                            </Link>
+
+                                        </TableCell>
+                                    ) : (
+                                        <TableCell className="border w-[180px] h-[90px] transform transition-transform duration-200"
+                                            onMouseEnter={() => setHover(prevState => ({ ...prevState, [lesson.id]: true }))}
+                                            onMouseLeave={() => setHover(prevState => ({ ...prevState, [lesson.id]: false }))}
+                                        >
+                                            <div className={`relative flex flex-col items-center justify-center transition-all duration-200 `}>
+                                                {hover[lesson.id] ? (
+                                                    <div className='absolute flex items-center justify-center flex-col w-[250px] h-[120px] p-2 bg-gray-200 rounded-lg gap-2'>
+                                                        <p className="font-bold">{lesson.teacher}</p>
+                                                        <p>{lesson.discipline}</p>
+                                                        <p>{lesson.group}</p>
+                                                    </div>
+                                                ) : (
+                                                    <div className='absolute'>
+                                                        <p className="z-0">{lesson.teacher.slice(0, 10)}...</p>
+                                                        <p className="z-0">{lesson.discipline.slice(0, 10)}...</p>
+                                                        <p>{lesson.group.slice(0, 10)}...</p>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </TableCell>
+                                    )}
+
+
                                 </>
                             );
                         } else {
@@ -158,13 +198,13 @@ export default function TimeTable({ data, weekRange }) {
     return (
         <section className="flex items-center justify-center flex-col ">
             <div className="flex gap-5">
-                <button style={{ padding: 5, borderRadius: 7, backgroundColor: day === 1 ? '#921CB0' : 'initial' }} onClick={() => handleClickDay(1)}>Пн</button>
-                <button style={{ padding: 5, borderRadius: 7, backgroundColor: day === 2 ? '#921CB0' : 'initial' }} onClick={() => handleClickDay(2)}>Вт</button>
-                <button style={{ padding: 5, borderRadius: 7, backgroundColor: day === 3 ? '#921CB0' : 'initial' }} onClick={() => handleClickDay(3)}>Ср</button>
-                <button style={{ padding: 5, borderRadius: 7, backgroundColor: day === 4 ? '#921CB0' : 'initial' }} onClick={() => handleClickDay(4)}>Чт</button>
-                <button style={{ padding: 5, borderRadius: 7, backgroundColor: day === 5 ? '#921CB0' : 'initial' }} onClick={() => handleClickDay(5)}>Пт</button>
-                <button style={{ padding: 5, borderRadius: 7, backgroundColor: day === 6 ? '#921CB0' : 'initial' }} onClick={() => handleClickDay(6)}>Сб</button>
-                <button style={{ padding: 5, borderRadius: 7, backgroundColor: day === 7 ? '#921CB0' : 'initial' }} onClick={() => handleClickDay(7)}>Вс</button>
+                <button className={day === 1 && 'text-white bg-[#921CB0] p-2 rounded-md'} onClick={() => handleClickDay(1)}>Пн</button>
+                <button className={day === 2 && 'text-white bg-[#921CB0] p-2 rounded-md'} onClick={() => handleClickDay(2)}>Вт</button>
+                <button className={day === 3 && 'text-white bg-[#921CB0] p-2 rounded-md'} onClick={() => handleClickDay(3)}>Ср</button>
+                <button className={day === 4 && 'text-white bg-[#921CB0] p-2 rounded-md'} onClick={() => handleClickDay(4)}>Чт</button>
+                <button className={day === 5 && 'text-white bg-[#921CB0] p-2 rounded-md'} onClick={() => handleClickDay(5)}>Пт</button>
+                <button className={day === 6 && 'text-white bg-[#921CB0] p-2 rounded-md'} onClick={() => handleClickDay(6)}>Сб</button>
+                <button className={day === 7 && 'text-white bg-[#921CB0] p-2 rounded-md'} onClick={() => handleClickDay(7)}>Вс</button>
 
             </div>
 
@@ -174,7 +214,7 @@ export default function TimeTable({ data, weekRange }) {
                         <TableHeader>
                             <TableRow>
                                 <TableHead></TableHead>
-                                {dataset.slice(slideIndex * 5, slideIndex * 5 + 5).map((aud) => ( // Change here to display only 5 auditoriums per slide
+                                {dataset.slice(slideIndex * 5, slideIndex * 5 + 5).map((aud) => (
                                     <TableHead key={aud.class}>{aud.class}</TableHead>
                                 ))}
                             </TableRow>
@@ -184,9 +224,9 @@ export default function TimeTable({ data, weekRange }) {
                     </Table>
 
                     <div className="flex items-center justify-center gap-5">
-                        <button onClick={prevSlide}><Image className=' w-10 h-10 m-5 bg-[#921CB0] rounded-lg p-1' src={left} alt='leftImg' /></button>
+                        <button onClick={prevSlide}><Image className='w-10 h-10 m-5 bg-[#921CB0] rounded-lg p-1' src={ArrowLeftImg} alt='leftImg' /></button>
 
-                        <button onClick={nextSlide}><Image className='w-10 h-10 m-5 bg-[#921CB0] rounded-lg p-1' src={right} alt='rightImg' /></button>
+                        <button onClick={nextSlide}><Image className='w-10 h-10 m-5 bg-[#921CB0] rounded-lg p-1' src={ArrowRightImg} alt='rightImg' /></button>
                     </div>
 
                 </div>

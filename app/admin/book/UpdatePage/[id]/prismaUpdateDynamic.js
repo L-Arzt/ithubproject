@@ -24,9 +24,9 @@ export async function updateLesson(prevState, formData) {
     },
   });
   if (createLesson) {
-    revalidatePath('/User/TimeTable');
+    revalidatePath('/user/TimeTable');
     return {
-      message: 'Gotovo',
+      message: 'Готово',
     };
   }
   return {
