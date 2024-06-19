@@ -1,6 +1,6 @@
 'use client';
 
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 
 import {
     Table,
@@ -24,6 +24,11 @@ export default function TimeTable({ data, weekRange }) {
     const [dataset, setDataset] = useState(data);
     const context = useContext(ThemeContext)
     const [hover, setHover] = useState(false)
+
+    const nextButtonRef = useRef();
+    const prevButtonRef = useRef();
+    const slideContainerRef = useRef();
+
 
     useEffect(() => {
         if (context.weeks) {
@@ -52,11 +57,11 @@ export default function TimeTable({ data, weekRange }) {
 
 
     const nextSlide = () => {
-        setSlideIndex((prevSlideIndex) => prevSlideIndex + 1);
+        slideContainerRef.current.scrollLeft += 250;
     };
 
     const prevSlide = () => {
-        setSlideIndex((prevSlideIndex) => prevSlideIndex - 1);
+        slideContainerRef.current.scrollLeft -= 250;
     };
 
     function getDateFromDay(date, day) {
@@ -94,9 +99,9 @@ export default function TimeTable({ data, weekRange }) {
         let table = [];
         for (let i = 1; i < 7; i++) {
             let tablePart = (
-                <TableRow>
-                    <TableCell>{TimeLessonS[i]}<hr />{TimeLessonPo[i]}</TableCell>
-                    {dataset.slice(slideIndex * 5, slideIndex * 5 + 5).map((aud) => {
+                <TableRow className='customKletka'>
+                    <TableCell className="">{TimeLessonS[i]}<hr />{TimeLessonPo[i]}</TableCell>
+                    {dataset.map((aud) => {
                         const lesson = aud.rasp.find(
                             (lesson) => lesson.weekDay === day && lesson.numberLesson === i
 
@@ -154,7 +159,7 @@ export default function TimeTable({ data, weekRange }) {
                                                         <p>{lesson.group}</p>
                                                     </div>
                                                 ) : (
-                                                    <div className='absolute'>
+                                                    <div className='absolute '>
                                                         <p className="z-0">{lesson.teacher.slice(0, 10)}...</p>
                                                         <p className="z-0">{lesson.discipline.slice(0, 10)}...</p>
                                                         <p>{lesson.group.slice(0, 10)}...</p>
@@ -169,8 +174,8 @@ export default function TimeTable({ data, weekRange }) {
                             );
                         } else {
                             return (
-                                <TableCell className="border w-[180px] h-[90px]" key={aud.class}>
-                                    <div className='flex items-center justify-center flex-col gap-2'>
+                                <TableCell className=" border " key={aud.class}>
+                                    <div className='flex items-center justify-center flex-col gap-2 '>
                                         <h1 className='text-[#7E7E7E]'>Свободно</h1>
                                         <Link
                                             href={`/admin/book/${i}/${day}/${aud.class}/${getDateFromDay(
@@ -196,7 +201,7 @@ export default function TimeTable({ data, weekRange }) {
     }
 
     return (
-        <section className="flex items-center justify-center flex-col ">
+        <section className="flex items-center justify-center flex-col overflow-hidden">
             <div className="flex gap-5">
                 <button className={day === 1 && 'text-white bg-[#921CB0] p-2 rounded-md'} onClick={() => handleClickDay(1)}>Пн</button>
                 <button className={day === 2 && 'text-white bg-[#921CB0] p-2 rounded-md'} onClick={() => handleClickDay(2)}>Вт</button>
@@ -209,12 +214,12 @@ export default function TimeTable({ data, weekRange }) {
             </div>
 
             {dataset && (
-                <div>
+                <div className='overflow-x-scroll w-[100%] ' ref={slideContainerRef}>
                     <Table>
                         <TableHeader>
                             <TableRow>
                                 <TableHead></TableHead>
-                                {dataset.slice(slideIndex * 5, slideIndex * 5 + 5).map((aud) => (
+                                {dataset.map((aud) => (
                                     <TableHead key={aud.class}>{aud.class}</TableHead>
                                 ))}
                             </TableRow>
@@ -224,18 +229,16 @@ export default function TimeTable({ data, weekRange }) {
                     </Table>
 
                     <div className="flex items-center justify-center gap-5">
-                        <button onClick={prevSlide}><Image className='w-10 h-10 m-5 bg-[#921CB0] rounded-lg p-1' src={ArrowLeftImg} alt='leftImg' /></button>
-
-                        <button onClick={nextSlide}><Image className='w-10 h-10 m-5 bg-[#921CB0] rounded-lg p-1' src={ArrowRightImg} alt='rightImg' /></button>
+                        <button onClick={prevSlide}>
+                            <Image className='w-10 h-10 m-5 bg-[#921CB0] rounded-lg p-1' src={ArrowLeftImg} alt='leftImg' />
+                        </button>
+                        <button onClick={nextSlide}>
+                            <Image className='w-10 h-10 m-5 bg-[#921CB0] rounded-lg p-1' src={ArrowRightImg} alt='rightImg' />
+                        </button>
                     </div>
 
                 </div>
             )}
         </section>
     );
-
-
 }
-
-
-
