@@ -24,10 +24,7 @@ export default function TimeTable({ data, weekRange }) {
     const [dataset, setDataset] = useState(data);
     const context = useContext(ThemeContext)
     const [hover, setHover] = useState(false)
-
-    const nextButtonRef = useRef();
-    const prevButtonRef = useRef();
-    const slideContainerRef = useRef();
+    const slideContainerRef = useRef(null);
 
 
     useEffect(() => {
@@ -57,11 +54,13 @@ export default function TimeTable({ data, weekRange }) {
 
 
     const nextSlide = () => {
-        slideContainerRef.current.scrollLeft += 250;
-    };
+        console.log(slideContainerRef.current)
+        slideContainerRef.current.scrollBy(100, 0);
+    }
+
 
     const prevSlide = () => {
-        slideContainerRef.current.scrollLeft -= 250;
+        slideContainerRef.current.scrollBy(-100, 0);
     };
 
     function getDateFromDay(date, day) {
@@ -214,8 +213,8 @@ export default function TimeTable({ data, weekRange }) {
             </div>
 
             {dataset && (
-                <div className='overflow-x-scroll w-[100%] ' ref={slideContainerRef}>
-                    <Table>
+                <div className='overflow-x-scroll w-[100%] '>
+                    <Table refProp={slideContainerRef}>
                         <TableHeader>
                             <TableRow>
                                 <TableHead></TableHead>
