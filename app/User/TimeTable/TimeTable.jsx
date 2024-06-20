@@ -98,8 +98,8 @@ export default function TimeTable({ data, weekRange }) {
         let table = [];
         for (let i = 1; i < 7; i++) {
             let tablePart = (
-                <TableRow className='customKletka'>
-                    <TableCell className="">{TimeLessonS[i]}<hr />{TimeLessonPo[i]}</TableCell>
+                <TableRow className='customKletka '>
+                    <TableCell >{TimeLessonS[i]}<hr />{TimeLessonPo[i]}</TableCell>
                     {dataset.map((aud) => {
                         const lesson = aud.rasp.find(
                             (lesson) => lesson.weekDay === day && lesson.numberLesson === i
@@ -111,14 +111,14 @@ export default function TimeTable({ data, weekRange }) {
                             return (
                                 <>
                                     {lesson.booked == '1' ? (
-                                        <TableCell className="border w-[180px] h-[90px] transform transition-transform duration-200"
+                                        <TableCell className="border  transform transition-transform duration-200 "
                                             onMouseEnter={() => setHover(prevState => ({ ...prevState, [lesson.id]: true }))}
                                             onMouseLeave={() => setHover(prevState => ({ ...prevState, [lesson.id]: false }))}
                                         >
                                             <Link href={`/admin/book/UpdatePage/${lesson.id}`}>
-                                                <div className={`relative flex flex-col items-center justify-center transition-all duration-200 `}>
+                                                <div className={`relative w-[140px] h-[70px] flex flex-col items-center justify-center transition-all duration-200 `}>
                                                     {hover[lesson.id] ? (
-                                                        <div className='absolute flex items-center justify-center gap-2   w-[250px] h-[120px] p-2 bg-gray-200 rounded-lg'>
+                                                        <div className='absolute  flex items-center justify-center gap-2   w-[250px] h-[120px] p-2 bg-gray-200 rounded-lg '>
                                                             <div className='flex flex-col'>
                                                                 <p className="font-bold">{lesson.teacher}</p>
                                                                 <p>{lesson.discipline}</p>
@@ -135,7 +135,7 @@ export default function TimeTable({ data, weekRange }) {
 
                                                         </div>
                                                     ) : (
-                                                        <div className='absolute'>
+                                                        <div className='absolute flex items-center justify-center flex-col z-[-100]'>
                                                             <p className="z-0">{lesson.teacher.slice(0, 10)}...</p>
                                                             <p className="z-0">{lesson.discipline.slice(0, 10)}...</p>
                                                             <p>{lesson.group.slice(0, 10)}...</p>
@@ -146,11 +146,11 @@ export default function TimeTable({ data, weekRange }) {
 
                                         </TableCell>
                                     ) : (
-                                        <TableCell className="border w-[180px] h-[90px] transform transition-transform duration-200"
+                                        <TableCell className="border  transform transition-transform duration-200"
                                             onMouseEnter={() => setHover(prevState => ({ ...prevState, [lesson.id]: true }))}
                                             onMouseLeave={() => setHover(prevState => ({ ...prevState, [lesson.id]: false }))}
                                         >
-                                            <div className={`relative flex flex-col items-center justify-center transition-all duration-200 `}>
+                                            <div className={`relative w-[140px] h-[70px] flex flex-col items-center justify-center transition-all duration-200 `}>
                                                 {hover[lesson.id] ? (
                                                     <div className='absolute flex items-center justify-center flex-col w-[250px] h-[120px] p-2 bg-gray-200 rounded-lg gap-2'>
                                                         <p className="font-bold">{lesson.teacher}</p>
@@ -174,7 +174,7 @@ export default function TimeTable({ data, weekRange }) {
                         } else {
                             return (
                                 <TableCell className=" border " key={aud.class}>
-                                    <div className='flex items-center justify-center flex-col gap-2 '>
+                                    <div className='flex w-[140px] h-[70px] items-center justify-center flex-col gap-2 '>
                                         <h1 className='text-[#7E7E7E]'>Свободно</h1>
                                         <Link
                                             href={`/admin/book/${i}/${day}/${aud.class}/${getDateFromDay(
